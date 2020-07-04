@@ -1,0 +1,14 @@
+.tabbar-item {
+  flex: 1;
+  height: 49px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.tabbar-item img {
+  width: 24px;
+  height: 24px;
+  vertical-align: middle;
+  margin-top: 3px;
+  margin-bottom: 2px;
+}
