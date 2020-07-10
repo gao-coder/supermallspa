@@ -16,6 +16,6 @@
     methods: {},
   }
 </script>
-<style>
+<style scoped>
   @import '~assets/css/tarbar/tarbar.css';
 </style>

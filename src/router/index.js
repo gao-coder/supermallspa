@@ -4,6 +4,15 @@ const Home = () => import('views/home/Home.vue');
 const Category = () => import('views/category/Category.vue');
 const Shopcart = () => import('views/shopcart/Shopcart.vue');
 const Profile = () => import('views/profile/Profile.vue');
+const Details = () => import('views/details/Details.vue');
+const originalReplace = VueRouter.prototype.replace;
+VueRouter.prototype.replace = function replace(location) {
+  return originalReplace.call(this, location).catch(err => err);
+};
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err);
+}
 Vue.use(VueRouter);
 const routes = [
   {
@@ -11,8 +20,8 @@ const routes = [
     redirect: '/home',
   },
   {
-    path: '',
-    component: Home
+    path: '/home',
+    component: Home,
   },
   {
     path: '/category',
@@ -25,6 +34,10 @@ const routes = [
   {
     path: '/profile',
     component: Profile,
+  },
+  {
+    path: '/details/:iid',
+    component: Details
   }
 
 ];
