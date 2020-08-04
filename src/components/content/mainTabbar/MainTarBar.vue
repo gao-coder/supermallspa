@@ -67,4 +67,8 @@
   }
 </script>
 <style scoped>
+  .maintabbar {
+    height: 49px;
+    background-color: #fff;
+  }
 </style>

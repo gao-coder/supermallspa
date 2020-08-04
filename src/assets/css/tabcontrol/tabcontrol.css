@@ -1,7 +1,5 @@
 .tabcontrol {
   display: flex;
-  position: sticky;
-  top: 44px;
   height: 40px;
   line-height: 40px;
   text-align: center;

@@ -26,6 +26,9 @@
       },
       finishPullUp() {
         this.scroll.finishPullUp()
+      },
+      getCurrentY() {
+        return this.scroll.y;
       }
 
     },
@@ -46,11 +49,10 @@
         pullUpLoad: this.pullUpLoad,
       });
       this.scroll.on('scroll', (position) => {
-        this.$emit('backTopScroll', position);
+        this.$emit('scroll', position);
       })
       this.scroll.on('pullingUp', () => {
         this.$emit('pullUp');
-        console.log('上拉加载更多');
 
       })
     }

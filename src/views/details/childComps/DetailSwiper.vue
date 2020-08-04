@@ -1,7 +1,7 @@
 <template>
   <div class="detailswiper">
     <swiper>
-      <swiper-item v-for="item in topImages" class="detailswiperitem">
+      <swiper-item v-for="(item,index) in topImages" :key="index" class="detailswiperitem">
         <img :src="item" alt="error">
       </swiper-item>
     </swiper>

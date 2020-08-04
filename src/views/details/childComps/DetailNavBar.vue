@@ -2,7 +2,9 @@
   <div class="detailnavbar">
     <nav-bar>
       <template v-slot:left>
-        <img src="~assets/img/common/back.svg" alt="error" class="detail-left" @click="leftClick">
+        <div>
+          <img src="~assets/img/common/back.svg" alt="error" class="detail-left" @click="leftClick">
+        </div>
       </template>
       <template v-slot:center>
         <div class="detail-center">
@@ -33,6 +35,7 @@
     methods: {
       detailsitemClick(index) {
         this.currentIndex = index;
+        this.$emit('detailsItemListener', this.currentIndex);
       },
       leftClick() {
         this.$router.back();
@@ -43,9 +46,11 @@
 <style scoped>
   .detailnavbar {
     height: 44px;
-    position: relative;
-    z-index: 3;
+    position: fixed;
+    top: 0;
+    left: 0;
     background-color: #fff;
+    z-index: 9;
   }
 
   .detail-center {

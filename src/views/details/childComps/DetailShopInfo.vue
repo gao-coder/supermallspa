@@ -21,13 +21,19 @@
             <td>{{item.name}}</td>
             <td :style="{color: item.isBetter ? 'red':'green'}">{{item.score}}</td>
             <td>
-              <span :style="{'background-color': item.isBetter ? 'red':'green'}">
+              <span v-show="item.isBetter" :style="{'background-color': item.isBetter ? 'red':'green'}">
                 高
+              </span>
+              <span v-show="!item.isBetter" :style="{'background-color': item.isBetter ? 'red':'green'}">
+                低
               </span>
             </td>
           </tr>
         </table>
       </div>
+    </div>
+    <div class="shop-info-bottom">
+      进店逛逛
     </div>
   </div>
 </template>
@@ -101,5 +107,14 @@
 
   .shop-info-item-right table td {
     padding: 3px;
+  }
+
+  .shop-info-bottom {
+    width: 150px;
+    margin: auto;
+    background-color: #eee;
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 20px;
   }
 </style>

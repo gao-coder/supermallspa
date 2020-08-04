@@ -10,8 +10,7 @@
     <tab-control class="tabControl" :titles="['流行','新款','精选']" @tabClick="tabClickItem" ref="tabControl1"
       v-show="isShowTabControl">
     </tab-control>
-    <Scroll class="content" ref='scroll' :probeType="3" :pullUpLoad="true" @backTopScroll="backTopScroll"
-      @pullUp="loadMore">
+    <Scroll class="content" ref='scroll' :probeType="3" :pullUpLoad="true" @scroll="scrollContent" @pullUp="loadMore">
       <home-swiper :banners="banner" @swiperImageLoad="swiperImageLoad"></home-swiper>
       <home-recommend-view :recommend="recommend"></home-recommend-view>
       <feature-view></feature-view>
@@ -19,7 +18,7 @@
       </tab-control>
       <good-list :goods="getGoods"></good-list>
     </Scroll>
-    <back-scroll @click.native="backClick" v-show="isShowBackTop"></back-scroll>
+    <back-top @click.native="backTopClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -32,10 +31,9 @@
   import TabControl from 'components/content/tabcontrol/TabControl.vue';
   import GoodList from 'components/content/goodList/GoodList.vue';
   import Scroll from 'components/common/scroll/Scroll.vue';
-  import BackScroll from 'components/content/backScroll/BackScroll.vue';
 
   import { getHomeMultiData, getHomeData } from 'network/home.js';
-  import { debounce } from 'common/utils.js';
+  import { itemListenerMixin, backtopMixin } from 'common/mixin.js';
   export default {
     name: 'Home',
     components: {
@@ -47,8 +45,8 @@
       TabControl,
       GoodList,
       Scroll,
-      BackScroll,
     },
+    mixins: [itemListenerMixin, backtopMixin],
     data() {
       return {
         banner: [],
@@ -68,10 +66,10 @@
           }
         },
         currentType: "pop",
-        isShowBackTop: false,
         tabbarOffsetTop: 0,
         isShowTabControl: false,
         saveY: 0,
+        homeImageLoader: null,
       }
     },
     computed: {
@@ -116,25 +114,19 @@
         this.$refs.tabControl1.currentItem = item;
         this.$refs.tabControl2.currentItem = item;
       },
-      backClick() {
-        this.$refs.scroll.scrollTo(0, 0);
-      },
-      backTopScroll(position) {
-        (-position.y) > 1000 ? this.isShowBackTop = true : this.isShowBackTop = false;
+      scrollContent(position) {
         if ((-position.y) > this.tabbarOffsetTop) {
           this.isShowTabControl = true;
         } else {
           this.isShowTabControl = false;
-
         }
+        this.isToTopListener(position);
       },
       loadMore() {
         this.getHomeData(this.currentType)
       },
       swiperImageLoad() {
         this.tabbarOffsetTop = this.$refs.tabControl2.$el.offsetTop;
-        console.log(this.tabbarOffsetTop);
-
       }
 
     },
@@ -151,18 +143,24 @@
       this.getHomeData('new');
     },
     mounted() {
-      const refresh = debounce(this.$refs.scroll.refresh)
-      this.$bus.$on('imageLoad', () => {
-        refresh();
-      })
+      this.homeImageLoader = () => {
+        this.mixinNewRefresh()
+
+      }
+      //手动代码点击tab-control
+      this.tabClickItem(0)
     },
     activated() {
-      this.$refs.scroll.scrollTo(0, -this.saveY, 0)
-      this.$refs.scroll.refresh()
+      this.$refs.scroll.scrollTo(0, this.saveY, 10);
+      this.$bus.$on('imageLoad', this.homeImageLoader);
+      this.$refs.scroll && this.$refs.scroll.refresh();
     },
     deactivated() {
-      this.saveY = this.$refs.scroll.y
-    }
+      //保存滚动的距离y值
+      this.saveY = this.$refs.scroll.getCurrentY();
+      //取消事件处理函数
+      this.$bus.$off('imageLoad', this.homeImageLoader);
+    },
   }
 </script>
 <style scoped>

@@ -10,9 +10,11 @@
 <script>
   import MainTabBar from './components/content/mainTabbar/MainTarBar.vue'
   import router from './router/index.js';
+  import store from './store/index.js';
   export default {
     name: 'app',
     router,
+    store,
     components: {
       MainTabBar,
     }

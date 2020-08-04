@@ -1,7 +1,7 @@
 <template>
   <div v-if="Object.keys(goods).length != 0" class="detailbaseinfo">
     <div class="desc">
-      <h2>{{goods.title}}</h2>
+      <p>{{goods.title}}</p>
     </div>
     <div class="price">
       <span class="nowPrice">{{goods.price}}</span>
@@ -17,7 +17,7 @@
     </div>
     <div class="shopService">
       <div v-for="count in goods.services.length-1" class="shopServiceItem">
-        <img :src="goods.services[count-1].icon" alt="error">
+        <img :src="goods.services[count-1].icon">
         <span>{{goods.services[count-1].name}}</span>
       </div>
     </div>
@@ -50,6 +50,10 @@
     padding: 15px 5px 5px 5px;
   }
 
+  .desc>p {
+    color: #222;
+  }
+
   .price {
     padding: 15px 5px 5px 5px;
   }
@@ -79,6 +83,7 @@
     display: flex;
     padding: 15px 5px 5px 5px;
     justify-content: space-between;
+    color: #bbb;
   }
 
 
@@ -86,18 +91,20 @@
     border-top: solid 6px #eee;
     border-bottom: solid 6px #eee;
     padding: 20px, 15px, 5px, 20px;
+    margin: 0 10px;
     display: flex;
-    justify-content: space-between;
   }
 
   .shopServiceItem {
     height: 60px;
+    font-size: 14px;
     text-align: center;
     line-height: 60px;
+    flex: 1;
   }
 
   .shopServiceItem img {
-    width: 25px;
+    width: 17px;
     vertical-align: middle;
   }
 </style>
